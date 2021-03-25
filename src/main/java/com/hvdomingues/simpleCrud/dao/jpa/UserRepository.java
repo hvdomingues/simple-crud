@@ -18,6 +18,6 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long>{
 	
 	Page<User> findAll(Example<User> user, Pageable pageable);
 	
-	User findByLogin(String login);
+	User findByLoginIgnoreCase(String login);
 
 }
