@@ -7,12 +7,12 @@ import com.hvdomingues.simpleCrud.dto.UserDto;
 public interface UserService {
 	
 	Page<UserDto> findAll(Boolean deleted, Integer page, Integer size);
-	Page<UserDto> findBy(UserDto user, Integer page, Integer size);
+	Page<UserDto> findBy(UserDto user, Boolean deleted, Integer page, Integer size);
 
 	UserDto create(UserDto toCreate);
 	UserDto update(UserDto toUpdate);
 	
-	UserDto delete(UserDto toDelete);
+	UserDto delete(String login);
 	
 
 }

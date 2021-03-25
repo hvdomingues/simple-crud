@@ -1,14 +1,28 @@
 package com.hvdomingues.simpleCrud.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class UserDto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private String login;
 	private String fullName;
-	private String birthDay;
+	private Date birthday;
 	private String zipCode;
+	
+	public UserDto() {
+		
+	}
+	
+	public UserDto(String login, String fullName, Date birthday, String zipCode) {
+		
+		this.login = login;
+		this.fullName = fullName;
+		this.birthday = birthday;
+		this.zipCode = zipCode;
+		
+	}
 	
 	public String getLogin() {
 		return login;
@@ -22,11 +36,11 @@ public class UserDto implements Serializable{
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
-	public String getBirthDay() {
-		return birthDay;
+	public Date getBirthDay() {
+		return birthday;
 	}
-	public void setBirthDay(String birthDay) {
-		this.birthDay = birthDay;
+	public void setBirthDay(Date birthDay) {
+		this.birthday = birthDay;
 	}
 	public String getZipCode() {
 		return zipCode;
@@ -61,7 +75,7 @@ public class UserDto implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "UserDto [login=" + login + ", fullName=" + fullName + ", birthDay=" + birthDay + ", zipCode=" + zipCode
+		return "UserDto [login=" + login + ", fullName=" + fullName + ", birthDay=" + birthday + ", zipCode=" + zipCode
 				+ "]";
 	}
 	
