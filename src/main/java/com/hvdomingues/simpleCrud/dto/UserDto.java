@@ -49,6 +49,16 @@ public class UserDto implements Serializable{
 		this.zipCode = zipCode;
 	}
 	
+	public Boolean isFullFilled() {
+		
+		if(this.login == null || this.birthday == null || this.fullName == null || this.zipCode == null) {
+			return false;
+		}else {
+			return true;
+		}
+		
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

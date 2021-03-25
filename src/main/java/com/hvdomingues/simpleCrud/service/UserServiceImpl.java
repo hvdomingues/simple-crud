@@ -80,9 +80,17 @@ public class UserServiceImpl implements UserService, Serializable{
 		
 		}else {
 			
-			created = userRepository.save(dtoToUser(toCreate)); //Criar validação
-			
-			return userToDto(created);
+			if(toCreate.isFullFilled()) {
+				
+				created = userRepository.save(dtoToUser(toCreate)); //Criar validação
+				
+				
+				return userToDto(created);
+			}else {
+				
+				return null; //Criar erro
+				
+			}
 			
 		}
 		
@@ -100,7 +108,7 @@ public class UserServiceImpl implements UserService, Serializable{
 			
 		}else {
 			
-			if(toUpdate.getFullName() != null) {
+			if(toUpdate.getFullName() != null || !toUpdate.getFullName().isBlank()) {
 				
 				foundUser.setFullName(toUpdate.getFullName());
 				
@@ -112,7 +120,7 @@ public class UserServiceImpl implements UserService, Serializable{
 				
 			}
 			
-			if(toUpdate.getZipCode() != null) {
+			if(toUpdate.getZipCode() != null || !toUpdate.getZipCode().isBlank()) {
 				
 				foundUser.setZipCode(toUpdate.getZipCode());
 				
