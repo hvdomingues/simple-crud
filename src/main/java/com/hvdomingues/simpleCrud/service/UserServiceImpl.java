@@ -7,10 +7,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 
 import com.hvdomingues.simpleCrud.dao.jpa.UserRepository;
@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService, Serializable{
 		
 		User userFound = userRepository.findByLogin(login);
 		
-		if(userFound.getIsDeleted()) {
+		if(userFound == null || userFound.getIsDeleted()) {
 			
 			return null; //criar erro
 			

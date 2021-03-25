@@ -32,8 +32,16 @@ public class User implements Serializable {
 	@Column(name = "user_zip_code")
 	private String zipCode;
 	
-	@Column(name = "user_is_deleted", columnDefinition = "boolean default false")
+	@Column(name = "user_is_deleted")
 	Boolean isDeleted;
+	
+	public User() {
+		
+		if(isDeleted == null) {
+			isDeleted = false;
+		}
+		
+	}
 
 	
 	public Long getId() {
