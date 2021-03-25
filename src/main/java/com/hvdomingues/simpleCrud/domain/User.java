@@ -32,7 +32,7 @@ public class User implements Serializable {
 	@Column(name = "user_zip_code")
 	private String zipCode;
 	
-	@Column(name = "user_is_deleted")
+	@Column(name = "user_is_deleted", columnDefinition = "boolean default false")
 	Boolean isDeleted;
 
 	
