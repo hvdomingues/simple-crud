@@ -110,19 +110,19 @@ public class UserServiceImpl implements UserService, Serializable{
 			
 		}else {
 			
-			if(toUpdate.getFullName() != null || !toUpdate.getFullName().isBlank()) {
+			if(toUpdate.getFullName() != null && !toUpdate.getFullName().isBlank()) {
 				
 				foundUser.setFullName(toUpdate.getFullName());
 				
 			}
 			
-			if(toUpdate.getBirthDay() != null) {
+			if(toUpdate.getBirthDay() != null && !toUpdate.getBirthDay().isBlank()) {
 				
 				foundUser.setBirthday(toUpdate.getBirthDay());
 				
 			}
 			
-			if(toUpdate.getZipCode() != null || !toUpdate.getZipCode().isBlank()) {
+			if(toUpdate.getZipCode() != null && !toUpdate.getZipCode().isBlank()) {
 				
 				foundUser.setZipCode(toUpdate.getZipCode());
 				

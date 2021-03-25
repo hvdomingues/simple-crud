@@ -1,2 +1,21 @@
 INSERT INTO USER(user_login, user_full_name, user_birthday, user_zip_code, user_is_deleted) VALUES
-	('henrique', 'henrique domingues', '1999-10-22', '03512-000', 0);
+	('henrique', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique2', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique3', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique4', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique5', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique6', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique7', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique8', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique9', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique10', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique11', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique12', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique13', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique14', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique15', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique16', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique17', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique18', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique19', 'henrique domingues', '1999-10-22', '03512-000', 0),
+	('henrique20', 'henrique domingues', '1999-10-22', '03512-000', 0);
