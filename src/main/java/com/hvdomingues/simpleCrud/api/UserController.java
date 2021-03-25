@@ -66,13 +66,23 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.DELETE, consumes = { "application/json" }, produces = {
-		"application/json" })
+			"application/json" })
 	public ResponseEntity<UserDto> deleteUserByLogin(@RequestBody String login) {
-		
+
 		UserDto deletedUserDto = userService.delete(login);
 
 		return new ResponseEntity<UserDto>(deletedUserDto, HttpStatus.OK);
-		
+
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.PUT, produces = {
+			"application/json" })
+	public ResponseEntity<UserDto> changeUserLogin(@RequestParam String login, @RequestParam String newLogin) {
+
+		UserDto updatedUserDto = userService.changeLogin(login, newLogin);
+
+		return new ResponseEntity<UserDto>(updatedUserDto, HttpStatus.OK);
+
 	}
 
 }

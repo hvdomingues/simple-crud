@@ -157,6 +157,32 @@ public class UserServiceImpl implements UserService, Serializable{
 
 	}
 	
+	@Override
+	public UserDto changeLogin(String login, String newLogin) {
+		
+		User oldLoginUser = userRepository.findByLoginIgnoreCase(login);
+		User newLoginUser = userRepository.findByLoginIgnoreCase(newLogin);
+		
+		if(!oldLoginUser.getIsDeleted() && newLoginUser == null) {
+			
+			oldLoginUser.setLogin(newLogin);
+			
+			newLoginUser = userRepository.save(oldLoginUser);
+			
+			return userToDto(newLoginUser);
+			
+		}else if(oldLoginUser.getIsDeleted()){
+			
+			throw new NotFoundException("Não foi encontrado usuário ativo com esse login.");
+			
+		}else {
+			
+			throw new NotFoundException("Nome de usuário não disponível");
+			
+		}
+		
+	}
+	
 	private User dtoToUser(UserDto userDto) {
 		
 		User user = new User();
@@ -197,6 +223,8 @@ public class UserServiceImpl implements UserService, Serializable{
 		return userDto;
 		
 	}
+
+	
 
 	
 
