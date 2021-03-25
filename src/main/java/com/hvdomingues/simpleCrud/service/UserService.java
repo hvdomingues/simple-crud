@@ -13,6 +13,7 @@ public interface UserService {
 	UserDto update(UserDto toUpdate);
 	
 	UserDto delete(String login);
+	UserDto changeLogin(String login, String newLogin);
 	
 
 }
