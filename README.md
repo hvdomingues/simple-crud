@@ -1,6 +1,6 @@
 # Simple Crud
 
-Esse é um projeto de uma API CRUD básica de usuário porém utilizando boas práticas de código.<br/>
+Esse é um projeto de uma API CRUD básica de usuário, focada em boas práticas de código.<br/>
 O código é todo feito em Java 11 e utiliza SpringBoot, SwaggerUI e H2 Database. 
 
 ## Instalação
@@ -16,9 +16,11 @@ git clone https://github.com/hvdomingues/simple-crud.git
 Após abrir no Eclipse ou na IDE de sua escolha, dentro da pasta "src/main/java" há o pacote principal, nomeado "com.hvdomingues.simpleCrud". Basta executar a classe "SimpleCrudApplication.java".
 
 ## Testando a aplicação
-O servidor rodará na url "localhost:8080" como padrão.<br/>
-Para testes utilizando o Swagger, basta acessar na url "localhost:8080/swagger-ui.html".<br/>
-Para ter acesso ao H2, acessar a url "http://localhost:8080/h2-console" e utilizar o usuário "sa" com a senha "password".
+O servidor rodará por padrão na url "localhost:8080".<br/>
+Para testes utilizando o Swagger, basta acessar a url "localhost:8080/swagger-ui.html".<br/>
+Para ter acesso ao H2, acessar a url "http://localhost:8080/h2-console" e utilizar o usuário "sa" com a senha "password".<br/>
+Na pasta Resources, há um data.sql contendo algumas inserções para teste.
+
 
 # Endpoints
 ## "/api/user"
