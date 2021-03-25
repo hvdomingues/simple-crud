@@ -1,21 +1,19 @@
 package com.hvdomingues.simpleCrud.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private String login;
 	private String fullName;
-	private Date birthday;
+	private String birthday;
 	private String zipCode;
 	
-	public UserDto() {
-		
-	}
-	
-	public UserDto(String login, String fullName, Date birthday, String zipCode) {
+
+	public UserDto(String login, String fullName, String birthday, String zipCode) {
 		
 		this.login = login;
 		this.fullName = fullName;
@@ -36,11 +34,14 @@ public class UserDto implements Serializable{
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
-	public Date getBirthDay() {
+	public String getBirthDay() {
 		return birthday;
 	}
-	public void setBirthDay(Date birthDay) {
+	public void setBirthDay(String birthDay) {
+		
 		this.birthday = birthDay;
+		
+		
 	}
 	public String getZipCode() {
 		return zipCode;
@@ -49,9 +50,10 @@ public class UserDto implements Serializable{
 		this.zipCode = zipCode;
 	}
 	
+	@JsonIgnore
 	public Boolean isFullFilled() {
 		
-		if(this.login == null || this.birthday == null || this.fullName == null || this.zipCode == null) {
+		if(this.login == null || this.birthday == null || this.fullName == null || this.zipCode == null || this.login.isBlank() || this.fullName.isBlank() || this.zipCode.isEmpty()) {
 			return false;
 		}else {
 			return true;

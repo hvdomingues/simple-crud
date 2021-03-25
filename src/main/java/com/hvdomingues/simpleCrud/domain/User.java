@@ -1,6 +1,8 @@
 package com.hvdomingues.simpleCrud.domain;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -34,6 +36,7 @@ public class User implements Serializable {
 	
 	@Column(name = "user_is_deleted")
 	Boolean isDeleted;
+
 	
 	public User() {
 		
@@ -74,6 +77,32 @@ public class User implements Serializable {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+	
+	public void setBirthday(String birthdayString) {
+		
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		
+		dateFormat.setLenient(false);
+		
+		try {
+			
+			this.birthday = dateFormat.parse(birthdayString);
+			
+		}catch(ParseException e) {
+			throw new IllegalArgumentException("A data está no formato errado, utilizar o formato 'dd-MM-yyyy'");
+		}
+		
+	}
+	
+	public String getBirthdayAsString() {
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		
+		
+		
+		return dateFormat.format(birthday);
 	}
 
 	public String getZipCode() {
@@ -124,6 +153,9 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
+
+
+
 	
 	
 	

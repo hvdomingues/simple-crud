@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import com.hvdomingues.simpleCrud.dao.jpa.UserRepository;
 import com.hvdomingues.simpleCrud.domain.User;
 import com.hvdomingues.simpleCrud.dto.UserDto;
+import com.hvdomingues.simpleCrud.exception.DatabaseException;
+import com.hvdomingues.simpleCrud.exception.NotFoundException;
 
 @Service
 public class UserServiceImpl implements UserService, Serializable{
@@ -74,21 +76,21 @@ public class UserServiceImpl implements UserService, Serializable{
 		
 		User created;
 		
-		if(userRepository.findByLogin(toCreate.getLogin()) != null) {
+		if(userRepository.findByLoginIgnoreCase(toCreate.getLogin()) != null) {
 			
-			return null; //Criar erro
+			throw new NotFoundException("Nome de usuário não disponível");
 		
 		}else {
 			
 			if(toCreate.isFullFilled()) {
 				
-				created = userRepository.save(dtoToUser(toCreate)); //Criar validação
-				
+				created = userRepository.save(dtoToUser(toCreate));
 				
 				return userToDto(created);
+				
 			}else {
 				
-				return null; //Criar erro
+				throw new DatabaseException("Todos os campos devem ser preenchidos para que o usuário seja criado.");
 				
 			}
 			
@@ -100,11 +102,11 @@ public class UserServiceImpl implements UserService, Serializable{
 	@Override
 	public UserDto update(UserDto toUpdate) {
 		
-		User foundUser = userRepository.findByLogin(toUpdate.getLogin());
+		User foundUser = userRepository.findByLoginIgnoreCase(toUpdate.getLogin());
 		
-		if(foundUser == null) {
+		if(foundUser == null || foundUser.getIsDeleted()) {
 			
-			return null; //Criar erro
+			throw new NotFoundException("Não foi encontrado usuário ativo com esse login.");
 			
 		}else {
 			
@@ -137,11 +139,11 @@ public class UserServiceImpl implements UserService, Serializable{
 	@Override
 	public UserDto delete(String login) {
 		
-		User userFound = userRepository.findByLogin(login);
+		User userFound = userRepository.findByLoginIgnoreCase(login);
 		
 		if(userFound == null || userFound.getIsDeleted()) {
 			
-			return null; //criar erro
+			throw new NotFoundException("Não foi encontrado usuário ativo com esse login.");
 			
 		}else {
 			
@@ -190,7 +192,7 @@ public class UserServiceImpl implements UserService, Serializable{
 	
 	private UserDto userToDto(User user) {
 		
-		UserDto userDto = new UserDto(user.getLogin(), user.getFullName(), user.getBirthday(), user.getZipCode());
+		UserDto userDto = new UserDto(user.getLogin(), user.getFullName(), user.getBirthdayAsString(), user.getZipCode());
 		
 		return userDto;
 		
