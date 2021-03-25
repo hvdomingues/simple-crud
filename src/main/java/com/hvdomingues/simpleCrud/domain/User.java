@@ -31,6 +31,9 @@ public class User implements Serializable {
 	
 	@Column(name = "user_zip_code")
 	private String zipCode;
+	
+	@Column(name = "user_is_deleted")
+	Boolean isDeleted;
 
 	
 	public Long getId() {
@@ -74,6 +77,14 @@ public class User implements Serializable {
 	}
 
 	
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", login=" + login + ", fullName=" + fullName + ", birthday=" + birthday
