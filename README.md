@@ -30,6 +30,10 @@ Método PUT - Requer um JSON com os campos da classe UserDto, utilizando o login
 Método DELETE - Requer um JSON contendo uma String usuário e realiza o Soft Delete. Retorna um JSON contendo UserDto do usuário deletado.<br/>
 Método POST - Requer um JSON com os campos da classe UserDto, insere apenas se todos estiverem devidamente preenchidos. Retorna um JSON contendo o UserDto do usuário criado.
 
+## "/api/user/filter"
+
+Método POST -  Requer um JSON com os campos da classe UserDto, retorna um JSON de todos os usuários ativos que atendem aos campos. Parâmetros opcionais {page, size}.
+
 ## "/api/user/deleted"
 
 Método GET - Retorna um JSON com todos os usuários deletados cadastrados, parâmetros opcionais {page, size}.
