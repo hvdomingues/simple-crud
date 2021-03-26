@@ -20,7 +20,7 @@ import com.hvdomingues.simpleCrud.exception.DatabaseException;
 import com.hvdomingues.simpleCrud.exception.NotFoundException;
 
 @Service
-public class UserServiceImpl implements UserService, Serializable{
+public class UserServiceImpl implements UserService, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -28,206 +28,224 @@ public class UserServiceImpl implements UserService, Serializable{
 
 	@Override
 	public Page<UserDto> findAll(Boolean deleted, Integer page, Integer size) {
-		
+
 		PageRequest pageRequest = PageRequest.of(page, size);
-		
+
 		Page<User> userPage = userRepository.findByIsDeleted(deleted, pageRequest);
 		List<UserDto> listUserDto = new ArrayList<UserDto>();
 		
-		for(User foundUser : userPage) {
+		if(userPage.isEmpty()) {
 			
-			listUserDto.add(userToDto(foundUser));
+			throw new NotFoundException("Não foi achado nenhum usuário");
 			
 		}
-		
+
+		for (User foundUser : userPage) {
+
+			listUserDto.add(userToDto(foundUser));
+
+		}
+
 		Page<UserDto> userDtoPage = new PageImpl<UserDto>(listUserDto, userPage.getPageable(), listUserDto.size());
-		
+
 		return userDtoPage;
 	}
-	
+
 	@Override
-	public Page<UserDto> findBy(UserDto user, Boolean deleted, Integer page, Integer size) {
-		
+	public Page<UserDto> findBy(UserDto user, Integer page, Integer size) {
+
 		PageRequest pageRequest = PageRequest.of(page, size);
-		
+
 		User exampleUser = dtoToUser(user);
+
+		Page<User> userPage = userRepository.findAll(
+				Example.of(exampleUser,
+						ExampleMatcher.matchingAll().withStringMatcher(StringMatcher.CONTAINING).withIgnoreCase()),
+				pageRequest);
 		
-		exampleUser.setIsDeleted(deleted);
+
 		
-		
-		Page<User> userPage = userRepository.findAll(Example.of(exampleUser, 
-				ExampleMatcher.matchingAll().withStringMatcher(StringMatcher.STARTING).withIgnoreCase()), pageRequest);
-		
-		List<UserDto> listUserDto = new ArrayList<UserDto>();
-		
-		for(User foundUser : userPage) {
+		if(userPage.isEmpty()) {
 			
-			listUserDto.add(userToDto(foundUser));
+			throw new NotFoundException("Não foi achado nenhum usuário com os critérios");
 			
 		}
-		
+
+		List<UserDto> listUserDto = new ArrayList<UserDto>();
+
+		for (User foundUser : userPage) {
+
+			listUserDto.add(userToDto(foundUser));
+
+		}
+
 		Page<UserDto> userDtoPage = new PageImpl<UserDto>(listUserDto, userPage.getPageable(), listUserDto.size());
-		
+
 		return userDtoPage;
 	}
 
 	@Override
 	public UserDto create(UserDto toCreate) {
-		
+
 		User created;
-		
-		if(userRepository.findByLoginIgnoreCase(toCreate.getLogin()) != null) {
-			
+
+		if (userRepository.findByLoginIgnoreCase(toCreate.getLogin()) != null) {
+
 			throw new NotFoundException("Nome de usuário não disponível");
-		
-		}else {
-			
-			if(toCreate.isFullFilled()) {
-				
+
+		} else {
+
+			if (toCreate.isFullFilled()) {
+
 				created = userRepository.save(dtoToUser(toCreate));
-				
+
 				return userToDto(created);
-				
-			}else {
-				
+
+			} else {
+
 				throw new DatabaseException("Todos os campos devem ser preenchidos para que o usuário seja criado.");
-				
+
 			}
-			
+
 		}
-		
-		
+
 	}
 
 	@Override
 	public UserDto update(UserDto toUpdate) {
-		
+
 		User foundUser = userRepository.findByLoginIgnoreCase(toUpdate.getLogin());
-		
-		if(foundUser == null || foundUser.getIsDeleted()) {
-			
+
+		if (foundUser == null || foundUser.getIsDeleted()) {
+
 			throw new NotFoundException("Não foi encontrado usuário ativo com esse login.");
-			
-		}else {
-			
-			if(toUpdate.getFullName() != null && !toUpdate.getFullName().isBlank()) {
-				
+
+		} else {
+
+			if (!isBlankOrNull(toUpdate.getFullName())) {
+
 				foundUser.setFullName(toUpdate.getFullName());
-				
+
 			}
-			
-			if(toUpdate.getBirthDay() != null && !toUpdate.getBirthDay().isBlank()) {
-				
-				foundUser.setBirthday(toUpdate.getBirthDay());
-				
+
+			if (!isBlankOrNull(toUpdate.getBirthday())) {
+
+				foundUser.setBirthday(toUpdate.getBirthday());
+
 			}
-			
-			if(toUpdate.getZipCode() != null && !toUpdate.getZipCode().isBlank()) {
-				
+
+			if (!isBlankOrNull(toUpdate.getZipCode())) {
+
 				foundUser.setZipCode(toUpdate.getZipCode());
-				
+
 			}
-			
+
 			User savedUser = userRepository.save(foundUser);
-			
+
 			return userToDto(savedUser);
-			
+
 		}
 
 	}
 
 	@Override
 	public UserDto delete(String login) {
-		
+
 		User userFound = userRepository.findByLoginIgnoreCase(login);
-		
-		if(userFound == null || userFound.getIsDeleted()) {
-			
+
+		if (userFound == null || userFound.getIsDeleted()) {
+
 			throw new NotFoundException("Não foi encontrado usuário ativo com esse login.");
-			
-		}else {
-			
+
+		} else {
+
 			userFound.setIsDeleted(true);
-			
+
 			User savedUser = userRepository.save(userFound);
-			
+
 			return userToDto(savedUser);
-			
+
 		}
 
 	}
-	
+
 	@Override
 	public UserDto changeLogin(String login, String newLogin) {
-		
+
 		User oldLoginUser = userRepository.findByLoginIgnoreCase(login);
 		User newLoginUser = userRepository.findByLoginIgnoreCase(newLogin);
-		
-		if(!oldLoginUser.getIsDeleted() && newLoginUser == null) {
-			
+
+		if (!oldLoginUser.getIsDeleted() && newLoginUser == null) {
+
 			oldLoginUser.setLogin(newLogin);
-			
+
 			newLoginUser = userRepository.save(oldLoginUser);
-			
+
 			return userToDto(newLoginUser);
-			
-		}else if(oldLoginUser.getIsDeleted()){
-			
+
+		} else if (oldLoginUser.getIsDeleted()) {
+
 			throw new NotFoundException("Não foi encontrado usuário ativo com esse login.");
-			
-		}else {
-			
+
+		} else {
+
 			throw new NotFoundException("Nome de usuário não disponível");
-			
+
 		}
-		
+
 	}
-	
+
 	private User dtoToUser(UserDto userDto) {
-		
+
 		User user = new User();
-		
-		if(userDto.getLogin() != null) {
-			
+
+		if (!isBlankOrNull(userDto.getLogin())) {
+
 			user.setLogin(userDto.getLogin());
 
 		}
-		
-		if(userDto.getFullName() != null) {
-			
+
+		if (!isBlankOrNull(userDto.getFullName())) {
+
 			user.setFullName(userDto.getFullName());
-			
+
 		}
-		
-		if(userDto.getBirthDay() != null) {
-			
-			user.setBirthday(userDto.getBirthDay());
-			
+
+		if (!isBlankOrNull(userDto.getBirthday())) {
+
+			user.setBirthday(userDto.getBirthday());
+
 		}
-		
-		if(userDto.getZipCode() != null) {
-			
+
+		if (!isBlankOrNull(userDto.getZipCode())) {
+
 			user.setZipCode(userDto.getZipCode());
-			
+
 		}
-		
+
 		return user;
-		
-		
+
 	}
-	
+
 	private UserDto userToDto(User user) {
-		
-		UserDto userDto = new UserDto(user.getLogin(), user.getFullName(), user.getBirthdayAsString(), user.getZipCode());
-		
+
+		UserDto userDto = new UserDto(user.getLogin(), user.getFullName(), user.getBirthdayAsString(),
+				user.getZipCode());
+
 		return userDto;
-		
+
 	}
 
-	
+	private Boolean isBlankOrNull(String toTest) {
 
-	
+		if (toTest != null && !toTest.isBlank()) {
 
-	
-	
+			return false;
+
+		}
+
+		return true;
+
+	}
+
 }
