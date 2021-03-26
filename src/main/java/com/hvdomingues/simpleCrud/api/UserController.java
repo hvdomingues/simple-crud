@@ -16,7 +16,7 @@ import com.hvdomingues.simpleCrud.dto.UserDto;
 import com.hvdomingues.simpleCrud.service.UserService;
 
 @RestController
-@RequestMapping(value = "/api/user")
+@RequestMapping(value = "/api/users")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 
@@ -33,6 +33,7 @@ public class UserController {
 		return ResponseEntity.ok(result);
 
 	}
+	
 
 	@GetMapping(value = "/deleted")
 	public ResponseEntity<Page<UserDto>> findAllDeleted(
@@ -42,6 +43,18 @@ public class UserController {
 		Page<UserDto> result = userService.findAll(true, page, size);
 
 		return ResponseEntity.ok(result);
+
+	}
+
+	@RequestMapping(value = "/filter", method = RequestMethod.POST, consumes = { "application/json" }, produces = {
+			"application/json" })
+	public ResponseEntity<Page<UserDto>> findAllBy(@RequestBody UserDto userDto,
+			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+
+		Page<UserDto> result = userService.findBy(userDto, page, size);
+
+		return new ResponseEntity<Page<UserDto>>(result, HttpStatus.OK);
 
 	}
 
@@ -75,8 +88,7 @@ public class UserController {
 
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.PUT, produces = {
-			"application/json" })
+	@RequestMapping(value = "/login", method = RequestMethod.PUT, produces = { "application/json" })
 	public ResponseEntity<UserDto> changeUserLogin(@RequestParam String login, @RequestParam String newLogin) {
 
 		UserDto updatedUserDto = userService.changeLogin(login, newLogin);

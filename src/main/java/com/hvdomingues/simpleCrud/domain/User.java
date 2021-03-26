@@ -81,18 +81,22 @@ public class User implements Serializable {
 	
 	public void setBirthday(String birthdayString) {
 		
-		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-		
-		dateFormat.setLenient(false);
-		
-		try {
+		if(birthdayString != null) {
 			
-			this.birthday = dateFormat.parse(birthdayString);
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			
-		}catch(ParseException e) {
-			throw new IllegalArgumentException("A data está no formato errado, utilizar o formato 'dd-MM-yyyy'");
+			dateFormat.setLenient(false);
+			
+			try {
+				
+				this.birthday = dateFormat.parse(birthdayString);
+				
+			}catch(ParseException e) {
+				throw new IllegalArgumentException("A data está no formato errado, utilizar o formato 'dd-MM-yyyy'");
+			}
+			
 		}
+		
 		
 	}
 	
